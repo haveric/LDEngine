@@ -2,7 +2,7 @@ var MapTiled = function(rows, cols) {
     this.rows = rows;
     this.cols = cols;
     
-    this.tiles = create2dArray(rows);
+    this.tiles = ArrayUtil.create2dArray(rows);
     this.endX;
     this.endY;
 }
@@ -52,30 +52,4 @@ MapTiled.prototype.draw = function(context, frame, x, y) {
             tile.draw(context, frame, i-initialLeft, j-initialTop, this, i, j);
         }
     }
-}
-
-function randomizeArray(array) {
-    var currentIndex = array.length;
-    var temp;
-    var randomIndex;
-    
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        
-        temp = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = array[temp];
-    }
-    
-    return array;
-}
-
-function create2dArray(numRows) {
-    var array = [];
-    
-    for (var i = 0; i < numRows; i++) {
-        array[i] = [];
-    }
-    return array;
 }
