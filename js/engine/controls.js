@@ -2,17 +2,13 @@
 var Key = {
     BACKSPACE: "8",
     TAB: "9",
-
     ENTER: "13",
-
     SHIFT: "16", // BOTH
     CONTROL: "17", // BOTH
     ALT: "18", // BOTH
     PAUSE_BREAK: "19",
     CAPS_LOCK: "20",
-
     ESCAPE: "27",
-
     SPACE: "32",
     PAGE_UP: "33",
     PAGE_DOWN: "34",
@@ -22,10 +18,8 @@ var Key = {
     UP: "38",
     RIGHT: "39",
     DOWN: "40",
-
     INSERT: "45",
     DELETE: "46",
-
     ZERO: "48",
     ONE: "49",
     TWO: "50",
@@ -36,11 +30,8 @@ var Key = {
     SEVEN: "55",
     EIGHT: "56",
     NINE: "57",
-
     SEMICOLON: "59",
-
     EQUALS: "61",
-
     A: "65",
     B: "66",
     C: "67",
@@ -70,7 +61,6 @@ var Key = {
     LEFT_WINDOW: "91",
     RIGHT_WINDOW: "92",
     SELECT: "93",
-
     NUMPAD0: "96",
     NUMPAD1: "97",
     NUMPAD2: "98",
@@ -83,7 +73,6 @@ var Key = {
     NUMPAD9: "105",
     NUMPAD_MULTIPLY: "106",
     NUMPAD_ADD: "107",
-
     NUMPAD_SUBTRACT: "109",
     NUMPAD_PERIOD: "110",
     NUMPAD_DIVIDE: "111",
@@ -99,19 +88,13 @@ var Key = {
     F10: "121",
     F11: "122",
     F12: "123",
-
     NUM_LOCK: "144",
     SCROLL_LOCK: "145",
-
     MINUS: "173",
-
     COMMA: "188",
-
     PERIOD: "190",
     FORWARD_SLASH: "191",
-
     GRAVE: "192",
-
     BRACKETS_LEFT: "219",
     BACK_SLASH: "220",
     BRACKETS_RIGHT: "221",
@@ -185,15 +168,6 @@ Controls.prototype.resetToDefault = function() {
         self.controls.set(key, value);
     });
 }
-
-Controls.prototype.resetToDefault2 = function() {
-    var self = this;
-
-    self.defaults2.forEach(function(value, key) {
-        self.controls.set(key, value);
-    });
-}
-
 
 Controls.prototype.setCustomKeys = function(name, keys) {
     this.controls.set(name, keys);
@@ -300,3 +274,16 @@ Controls.prototype.checkForGamepads = function() {
         }
     }
 }
+
+window.addEventListener("gamepadconnected", function(e) {
+    var gamepad = navigator.getGamepads()[e.gamepad.index];
+    console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.", gamepad.index, gamepad.id, gamepad.buttons.length, gamepad.axes.length);
+    console.log(gamepad.buttons);
+});
+
+window.addEventListener("gamepaddisconnected", function(e) {
+    /*
+    var gamepad = navigator.getGamepads()[e.gamepad.index];
+    console.log("Gamepad disconnected at index %d: %s. %d buttons, %d axes.", gamepad.index, gamepad.id, gamepad.buttons.length, gamepad.axes.length);
+    */
+});
