@@ -1,4 +1,4 @@
-var MapTiled = function(rows, cols) {
+const MapTiled = function(rows, cols) {
     this.rows = rows;
     this.cols = cols;
     
@@ -15,20 +15,20 @@ MapTiled.prototype.getTile = function(x,y) {
     return this.tiles[x][y];
 }
 MapTiled.prototype.generate = function() {
-    for (var i = 0; i < this.rows; i++) {
-        for (var j = 0; j < this.cols; j++) {
+    for (let i = 0; i < this.rows; i++) {
+        for (let j = 0; j < this.cols; j++) {
             this.tiles[i][j] = new Path();
         }
     }
 }
 
 MapTiled.prototype.draw = function(context, frame, x, y) {
-    var initialLeft = x - 12;
-    var initialTop = y - 10;
-    var left = initialLeft;
-    var right = x + 13;
-    var top = initialTop;
-    var bot = y + 10;
+    const initialLeft = x - 12;
+    const initialTop = y - 10;
+    let left = initialLeft;
+    let right = x + 13;
+    let top = initialTop;
+    let bot = y + 10;
 
     if (left < 0) {
         left = 0;
@@ -46,9 +46,9 @@ MapTiled.prototype.draw = function(context, frame, x, y) {
         bot = this.cols;
     }
 
-    for (var i = left; i < right; i++) {
-        for (var j = top; j < bot; j++) {
-            var tile = this.tiles[i][j];
+    for (let i = left; i < right; i++) {
+        for (let j = top; j < bot; j++) {
+            const tile = this.tiles[i][j];
             tile.draw(context, frame, i-initialLeft, j-initialTop, this, i, j);
         }
     }

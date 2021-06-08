@@ -1,22 +1,22 @@
 (function () {
-    var player,
+    let player,
         controls = new Controls(),
         gameState = new GameState(),
         canvasState = new CanvasState(),
         numRenders = 0,
         FPS = 60;
 
-    var map;
+    let map;
 
-    var init = function(type) {
+    const init = function(type) {
         canvasState.init();
         gameState.init(type);
 
-        var mapSize = 20;
+        const mapSize = 20;
 
         map = new MapTiled(mapSize, mapSize);
         map.generate();
-        var midPoint = Math.floor(mapSize/2);
+        const midPoint = Math.floor(mapSize/2);
 
         player = new PlayerTiled(midPoint, midPoint);
 
@@ -24,12 +24,12 @@
         MainLoop.setUpdate(handleUpdate).setDraw(render).setEnd().start();
     }
 
-    var handleUpdate = function(delta) {
+    const handleUpdate = function(delta) {
         handleInput();
         handleMovement(delta);
     }
 
-    var handleInput = function() {
+    const handleInput = function() {
         controls.checkForGamepads();
 
         if (controls.testPressed("up")) {
@@ -45,12 +45,12 @@
         }
     }
 
-    var handleMovement = function(delta) {
+    const handleMovement = function(delta) {
         // TODO: Move stuff
 
     }
 
-    var render = function() {
+    const render = function() {
         if (spriteMapper.preloadSprites()) {
 
             // TODO: Draw Stuff
@@ -61,7 +61,7 @@
             player.draw(canvasState.context, numRenders);
 
             numRenders++;
-            if (numRenders == FPS) {
+            if (numRenders === FPS) {
                 numRenders = 0;
             }
         }

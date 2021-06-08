@@ -1,4 +1,4 @@
-var GameState = function() {
+const GameState = function() {
     this.currentGameType = "none";
     this.hasEnded = false;
 }

@@ -1,4 +1,4 @@
-var ArrayUtil = {
+const ArrayUtil = {
     /*
     randomizeArray: function(array) {
         var currentIndex = array.length;
@@ -18,9 +18,9 @@ var ArrayUtil = {
     },
     */
     create2dArray: function(numRows) {
-        var array = [];
+        const array = [];
 
-        for (var i = 0; i < numRows; i++) {
+        for (let i = 0; i < numRows; i++) {
             array[i] = [];
         }
         return array;

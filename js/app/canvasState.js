@@ -1,4 +1,4 @@
-var CanvasState = function(newWidth, newHeight) {
+const CanvasState = function(newWidth, newHeight) {
     this.width = newWidth || 800;
     this.height = newHeight || 576;
 
@@ -16,7 +16,7 @@ CanvasState.prototype.init = function() {
 }
 
 CanvasState.prototype.setFillStyle = function(newFillStyle) {
-    if (newFillStyle != this.oldFillStyle) {
+    if (newFillStyle !== this.oldFillStyle) {
         this.context.fillStyle = newFillStyle;
         this.oldFillStyle = newFillStyle;
     }

@@ -1,4 +1,4 @@
-var Tile = function(name, sprite) {
+const Tile = function(name, sprite) {
     this.name = name;
     this.sprite = sprite;
     this.canWalk = false;
@@ -12,7 +12,7 @@ Tile.prototype.getCanWalk = function() {
     return this.canWalk;
 }
 
-var Path = function() {
+const Path = function() {
     Tile.call(this, "path", "path");
     this.canWalk = true;
 }

@@ -1,5 +1,5 @@
 // Keyboard
-var Key = {
+const Key = {
     BACKSPACE: "8",
     TAB: "9",
     ENTER: "13",
@@ -102,7 +102,7 @@ var Key = {
 }
 
 // Controllers (Tested with XBOX 360)
-var Btn = {
+const Btn = {
     A: "gamepad0",
     B: "gamepad1",
     X: "gamepad2",
@@ -130,8 +130,8 @@ var Btn = {
 }
 
 
-var Controls = function() {
-    var self = this;
+const Controls = function() {
+    const self = this;
 
     self.defaultDelay = 100;
     self.keysDown = [];
@@ -162,7 +162,7 @@ var Controls = function() {
 }
 
 Controls.prototype.resetToDefault = function() {
-    var self = this;
+    const self = this;
 
     self.defaults.forEach(function(value, key) {
         self.controls.set(key, value);
@@ -174,8 +174,8 @@ Controls.prototype.setCustomKeys = function(name, keys) {
 }
 
 Controls.prototype.isPressed = function(key) {
-    var self = this;
-    var pressed = false;
+    const self = this;
+    let pressed = false;
 
     self.controls.get(key).forEach(function(keyToTest) {
         if (keyToTest in self.keysDown) {
@@ -187,8 +187,8 @@ Controls.prototype.isPressed = function(key) {
 }
 
 Controls.prototype.isDelayed = function(key) {
-    var self = this;
-    var delayed = false;
+    const self = this;
+    let delayed = false;
 
     this.controls.get(key).forEach(function(keyToTest) {
         if (keyToTest in self.keysDelayed) {
@@ -200,7 +200,7 @@ Controls.prototype.isDelayed = function(key) {
 }
 
 Controls.prototype.deleteKey = function(key, delay) {
-    var self = this;
+    const self = this;
     self.controls.get(key).forEach(function(keyToTest) {
         delete self.keysDown[keyToTest];
         if (delay) {
@@ -224,8 +224,8 @@ Controls.prototype.deleteKey = function(key, delay) {
 Controls.prototype.testPressed = function(key, delay) {
     delay = delay || this.defaultDelay;
 
-    var self = this;
-    var succeeded = false;
+    const self = this;
+    let succeeded = false;
 
     if (self.isPressed(key) && !self.isDelayed(key)) {
         self.deleteKey(key, delay);
@@ -240,11 +240,11 @@ Controls.prototype.hasControllerSupport = function() {
 }
 
 Controls.prototype.checkForGamepads = function() {
-    var self = this;
+    const self = this;
     if (this.hasControllerSupport()) {
-        var numGamepads = navigator.getGamepads().length;
-        for (var i = 0; i < numGamepads; i++) {
-            var gamepad = navigator.getGamepads()[i];
+        const numGamepads = navigator.getGamepads().length;
+        for (let i = 0; i < numGamepads; i++) {
+            const gamepad = navigator.getGamepads()[i];
             if (gamepad) {
                 gamepad.axes.forEach(function(axis, axisIndex) {
                     if (axis <= -0.5) {
@@ -276,7 +276,7 @@ Controls.prototype.checkForGamepads = function() {
 }
 
 window.addEventListener("gamepadconnected", function(e) {
-    var gamepad = navigator.getGamepads()[e.gamepad.index];
+    const gamepad = navigator.getGamepads()[e.gamepad.index];
     console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.", gamepad.index, gamepad.id, gamepad.buttons.length, gamepad.axes.length);
     console.log(gamepad.buttons);
 });
