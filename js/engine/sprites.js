@@ -1,21 +1,22 @@
 const TextureMapper = function () {
-    textures = [];
+    this.textures = [];
 }
 
 TextureMapper.prototype.addTexture = function(name, src) {
+    const self = this;
     const image = new Image();
 
     image.onload = function () {
-        textures.push(new Texture(name, image));
+        self.textures.push(new Texture(name, image));
     };
     image.src = src;
 }
 
 TextureMapper.prototype.getTexture = function(textureName) {
-    const length = textures.length;
+    const length = this.textures.length;
     for (let i = 0; i < length; i++) {
-        if (textures[i].name === textureName) {
-            return textures[i].image;
+        if (this.textures[i].name === textureName) {
+            return this.textures[i].image;
         }
     }
     return null;
@@ -29,41 +30,41 @@ const Texture = function (name, image) {
 
 
 const SpriteMapper = function () {
-    sprites = [];
-    spritesPreloaded = false;
+    this.sprites = [];
+    this.spritesPreloaded = false;
 }
 
 SpriteMapper.prototype.addImage = function (imageName, textureName, x, y, w, h) {
-    sprites.push(new Sprite(imageName, textureName, x, y, w, h));
+    this.sprites.push(new Sprite(imageName, textureName, x, y, w, h));
 }
 
 SpriteMapper.prototype.getImage = function(imgName) {
-    const length = sprites.length;
+    const length = this.sprites.length;
     for (let i = 0; i < length; i++) {
-        if (sprites[i].imageName === imgName) {
-            return sprites[i];
+        if (this.sprites[i].imageName === imgName) {
+            return this.sprites[i];
         }
     }
     return null;
 }
 
 SpriteMapper.prototype.preloadSprites = function() {
-    if (!spritesPreloaded) {
-        const numSprites = sprites.length;
+    if (!this.spritesPreloaded) {
+        const numSprites = this.sprites.length;
         let numLoaded = 0;
 
-        sprites.forEach(function(sprite) {
+        this.sprites.forEach(function(sprite) {
             if (sprite.loadTexture()) {
                 numLoaded ++;
             }
         });
 
         if (numLoaded === numSprites) {
-            spritesPreloaded = true;
+            this.spritesPreloaded = true;
         }
     }
 
-    return spritesPreloaded;
+    return this.spritesPreloaded;
 }
 
 const Sprite = function (imageName, textureName, x, y, w, h) {

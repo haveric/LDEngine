@@ -53,7 +53,7 @@ SoundManager.prototype.setVolume = function(newVolume) {
 }
 
 SoundManager.prototype.getVolume = function() {
-    return volume;
+    return this.volume;
 }
 
 const Sound = function (name, src, vol) {
