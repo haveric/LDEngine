@@ -1,104 +1,49 @@
 // Keyboard
 const Key = {
-    BACKSPACE: "8",
-    TAB: "9",
-    ENTER: "13",
-    SHIFT: "16", // BOTH
-    CONTROL: "17", // BOTH
-    ALT: "18", // BOTH
-    PAUSE_BREAK: "19",
-    CAPS_LOCK: "20",
-    ESCAPE: "27",
-    SPACE: "32",
-    PAGE_UP: "33",
-    PAGE_DOWN: "34",
-    END: "35",
-    HOME: "36",
-    LEFT: "37",
-    UP: "38",
-    RIGHT: "39",
-    DOWN: "40",
-    INSERT: "45",
-    DELETE: "46",
-    ZERO: "48",
-    ONE: "49",
-    TWO: "50",
-    THREE: "51",
-    FOUR: "52",
-    FIVE: "53",
-    SIX: "54",
-    SEVEN: "55",
-    EIGHT: "56",
-    NINE: "57",
-    SEMICOLON: "59",
-    EQUALS: "61",
-    A: "65",
-    B: "66",
-    C: "67",
-    D: "68",
-    E: "69",
-    F: "70",
-    G: "71",
-    H: "72",
-    I: "73",
-    J: "74",
-    K: "75",
-    L: "76",
-    M: "77",
-    N: "78",
-    O: "79",
-    P: "80",
-    Q: "81",
-    R: "82",
-    S: "83",
-    T: "84",
-    U: "85",
-    V: "86",
-    W: "87",
-    X: "88",
-    Y: "89",
-    Z: "90",
-    LEFT_WINDOW: "91",
-    RIGHT_WINDOW: "92",
-    SELECT: "93",
-    NUMPAD0: "96",
-    NUMPAD1: "97",
-    NUMPAD2: "98",
-    NUMPAD3: "99",
-    NUMPAD4: "100",
-    NUMPAD5: "101",
-    NUMPAD6: "102",
-    NUMPAD7: "103",
-    NUMPAD8: "104",
-    NUMPAD9: "105",
-    NUMPAD_MULTIPLY: "106",
-    NUMPAD_ADD: "107",
-    NUMPAD_SUBTRACT: "109",
-    NUMPAD_PERIOD: "110",
-    NUMPAD_DIVIDE: "111",
-    F1: "112",
-    F2: "113",
-    F3: "114",
-    F4: "115",
-    F5: "116",
-    F6: "117",
-    F7: "118",
-    F8: "119",
-    F9: "120",
-    F10: "121",
-    F11: "122",
-    F12: "123",
-    NUM_LOCK: "144",
-    SCROLL_LOCK: "145",
-    MINUS: "173",
-    COMMA: "188",
-    PERIOD: "190",
-    FORWARD_SLASH: "191",
-    GRAVE: "192",
-    BRACKETS_LEFT: "219",
-    BACK_SLASH: "220",
-    BRACKETS_RIGHT: "221",
-    QUOTE: "222"
+    LEFT: "ArrowLeft",
+    RIGHT: "ArrowRight",
+    UP: "ArrowUp",
+    DOWN: "ArrowDown",
+    BACKSPACE: "Backspace",
+    TAB: "Tab",
+    ENTER: "Enter",
+    SHIFT_LEFT: "Left Shift",
+    SHIFT_RIGHT: "Right Shift",
+    CONTROL_LEFT: "Left Control",
+    CONTROL_RIGHT: "Right Control",
+    ALT_LEFT: "Left Alt",
+    ALT_RIGHT: "Right Alt",
+    PAUSE_BREAK: "Pause",
+    CAPS_LOCK: "CapsLock",
+    ESCAPE: "Escape",
+    SPACE: " ",
+    PAGE_UP: "PageUp",
+    PAGE_DOWN: "PageDown",
+    END: "End",
+    HOME: "Home",
+    INSERT: "Insert",
+    DELETE: "Delete",
+    OS_LEFT: "Left OS",
+    OS_RIGHT: "Right OS",
+    CONTEXT_MENU: "ContextMenu",
+    SCROLL_LOCK: "ScrollLock",
+    NUM_LOCK: "NumLock",
+    NUMPAD_DIVIDE: "Numpad /",
+    NUMPAD_MULTIPLY: "Numpad *",
+    NUMPAD_SUBTRACT: "Numpad -",
+    NUMPAD_ADD: "Numpad +",
+    NUMPAD_ENTER: "Numpad Enter",
+    NUMPAD_PERIOD: "Numpad .",
+    NUMPAD_0: "Numpad 0",
+    NUMPAD_1: "Numpad 1",
+    NUMPAD_2: "Numpad 2",
+    NUMPAD_3: "Numpad 3",
+    NUMPAD_4: "Numpad 4",
+    NUMPAD_5: "Numpad 5",
+    NUMPAD_6: "Numpad 6",
+    NUMPAD_7: "Numpad 7",
+    NUMPAD_8: "Numpad 8",
+    NUMPAD_9: "Numpad 9",
 }
 
 // Controllers (Tested with XBOX 360)
@@ -139,26 +84,44 @@ const Controls = function() {
     self.defaults = new Map();
 
     self.controls = new Map();
-    self.defaults.set("left", [Key.LEFT, Key.A, Btn.LEFT, Btn.LEFT_STICK_LEFT]);
-    self.defaults.set("right", [Key.RIGHT, Key.D, Btn.RIGHT, Btn.LEFT_STICK_RIGHT]);
-    self.defaults.set("up", [Key.UP, Key.W, Btn.UP, Btn.LEFT_STICK_UP]);
-    self.defaults.set("down", [Key.DOWN, Key.S, Btn.DOWN, Btn.LEFT_STICK_DOWN]);
+    self.defaults.set("left", [Key.LEFT, "a", Btn.LEFT, Btn.LEFT_STICK_LEFT]);
+    self.defaults.set("right", [Key.RIGHT, "d", Btn.RIGHT, Btn.LEFT_STICK_RIGHT]);
+    self.defaults.set("up", [Key.UP, "w", Btn.UP, Btn.LEFT_STICK_UP]);
+    self.defaults.set("down", [Key.DOWN, "s", Btn.DOWN, Btn.LEFT_STICK_DOWN]);
     self.defaults.set("action", [Key.SPACE, Key.ENTER, Btn.A]);
 
-    self.defaults.set("reset", [Key.R, Btn.START]);
+    self.defaults.set("reset", ["r", Btn.START]);
 
     self.resetToDefault();
 
-    self.keyDownListener = addEventListener("keydown", function (e) {
+    addEventListener("keydown", function (e) {
         //console.log("Keydown: " + e.keyCode + ", Location: " + e.location);
-        self.keysDown[e.keyCode] = true;
+        let key = self.getKey(e.key, e.code);
+        self.keysDown[key] = true;
     }, false);
 
-    self.keyUpListener = addEventListener("keyup", function (e) {
+
+    addEventListener("keyup", function (e) {
         //console.log("Keyup: " + e.keyCode + ", Location: " + e.location);
-        delete self.keysDown[e.keyCode];
-        delete self.keysDelayed[e.keyCode];
+        let key = self.getKey(e.key, e.code);
+
+        delete self.keysDown[key];
+        delete self.keysDelayed[key];
     }, false);
+}
+
+Controls.prototype.getKey = function(key, code) {
+    if (!code.startsWith("Arrow")) {
+        if (code.endsWith("Left")) {
+            key = "Left " + key;
+        } else if (code.endsWith("Right")) {
+            key = "Right " + key;
+        } else if (code.startsWith("Numpad")) {
+            key = "Numpad " + key;
+        }
+    }
+
+    return key;
 }
 
 Controls.prototype.resetToDefault = function() {
