@@ -26,7 +26,7 @@ class MapTiled {
         }
     }
 
-    draw(context, frame, x, y) {
+    draw(context, secondsPassed, x, y) {
         const initialLeft = x - 12;
         const initialTop = y - 10;
         let left = initialLeft;
@@ -53,7 +53,7 @@ class MapTiled {
         for (let i = left; i < right; i++) {
             for (let j = top; j < bot; j++) {
                 const tile = this.tiles[i][j];
-                tile.draw(context, frame, i-initialLeft, j-initialTop, this, i, j);
+                tile.draw(context, secondsPassed, i-initialLeft, j-initialTop, this, i, j);
             }
         }
     }

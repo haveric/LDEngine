@@ -69,7 +69,7 @@ class PlayerTiled {
         return this.y;
     }
 
-    draw(context, frame) {
+    draw(context, secondsPassed) {
         const sprite = "player";
 
         spriteMapper.getImage(sprite).drawImage(context, 384, 320);

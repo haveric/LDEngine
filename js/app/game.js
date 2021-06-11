@@ -2,11 +2,13 @@
     let player,
         controls = new Controls(),
         gameState = new GameState(),
-        canvasState = new CanvasState(),
-        numRenders = 0,
-        FPS = 60;
+        canvasState = new CanvasState();
 
     let map;
+
+    let secondsPassed,
+        oldTimeStamp,
+        fps;
 
     const init = function(type) {
         canvasState.init();
@@ -21,12 +23,30 @@
         player = new PlayerTiled(midPoint, midPoint);
 
 
-        MainLoop.setUpdate(handleUpdate).setDraw(render).setEnd().start();
+        gameLoop();
     }
 
-    const handleUpdate = function(delta) {
+    const gameLoop = function(timeStamp) {
+        window.requestAnimationFrame(gameLoop);
+
+        // Calculate the number of seconds passed since the last frame
+        secondsPassed = (timeStamp - oldTimeStamp) / 1000;
+        oldTimeStamp = timeStamp;
+
+        // Move forward in time with a maximum amount
+        secondsPassed = Math.min(secondsPassed, 0.1);
+
+
+        // Calculate fps
+        fps = Math.round(1 / secondsPassed);
+
+        update(secondsPassed);
+        render(secondsPassed);
+    }
+
+    const update = function(secondsPassed) {
         handleInput();
-        handleMovement(delta);
+        handleMovement(secondsPassed);
     }
 
     const handleInput = function() {
@@ -45,25 +65,22 @@
         }
     }
 
-    const handleMovement = function(delta) {
-        // TODO: Move stuff
+    const handleMovement = function(secondsPassed) {
 
     }
 
-    const render = function() {
+    const render = function(secondsPassed) {
         if (spriteMapper.preloadSprites()) {
-
-            // TODO: Draw Stuff
             canvasState.clear();
 
-            map.draw(canvasState.context, numRenders, player.getX(), player.getY());
+            map.draw(canvasState.context, secondsPassed, player.getX(), player.getY());
 
-            player.draw(canvasState.context, numRenders);
+            player.draw(canvasState.context, secondsPassed);
 
-            numRenders++;
-            if (numRenders === FPS) {
-                numRenders = 0;
-            }
+            // Draw number to the screen
+            canvasState.font = '25px Arial';
+            canvasState.setFillStyle('white');
+            canvasState.context.fillText("FPS: " + fps, 10, 20);
         }
     }
 

@@ -5,7 +5,7 @@ class Tile {
         this.canWalk = false;
     }
 
-    draw(context, frame, x, y, map, i, j) {
+    draw(context, secondsPassed, x, y, map, i, j) {
         spriteMapper.getImage(this.sprite).drawImage(context, x*32, y*32);
     }
 
