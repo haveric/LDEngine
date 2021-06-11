@@ -75,168 +75,172 @@ const Btn = {
 }
 
 
-const Controls = function() {
-    const self = this;
+class Controls {
+    constructor() {
+        const self = this;
 
-    self.defaultDelay = 100;
-    self.keysDown = [];
-    self.keysDelayed = [];
-    self.defaults = new Map();
+        self.defaultDelay = 100;
+        self.keysDown = [];
+        self.keysDelayed = [];
+        self.defaults = new Map();
 
-    self.controls = new Map();
-    self.defaults.set("left", [Key.LEFT, "a", Btn.LEFT, Btn.LEFT_STICK_LEFT]);
-    self.defaults.set("right", [Key.RIGHT, "d", Btn.RIGHT, Btn.LEFT_STICK_RIGHT]);
-    self.defaults.set("up", [Key.UP, "w", Btn.UP, Btn.LEFT_STICK_UP]);
-    self.defaults.set("down", [Key.DOWN, "s", Btn.DOWN, Btn.LEFT_STICK_DOWN]);
-    self.defaults.set("action", [Key.SPACE, Key.ENTER, Btn.A]);
+        self.controls = new Map();
+        self.defaults.set("left", [Key.LEFT, "a", Btn.LEFT, Btn.LEFT_STICK_LEFT]);
+        self.defaults.set("right", [Key.RIGHT, "d", Btn.RIGHT, Btn.LEFT_STICK_RIGHT]);
+        self.defaults.set("up", [Key.UP, "w", Btn.UP, Btn.LEFT_STICK_UP]);
+        self.defaults.set("down", [Key.DOWN, "s", Btn.DOWN, Btn.LEFT_STICK_DOWN]);
+        self.defaults.set("action", [Key.SPACE, Key.ENTER, Btn.A]);
 
-    self.defaults.set("reset", ["r", Btn.START]);
+        self.defaults.set("reset", ["r", Btn.START]);
 
-    self.resetToDefault();
+        self.resetToDefault();
 
-    addEventListener("keydown", function (e) {
-        //console.log("Keydown: " + e.keyCode + ", Location: " + e.location);
-        let key = self.getKey(e.key, e.code);
-        self.keysDown[key] = true;
-    }, false);
+        addEventListener("keydown", function (e) {
+            //console.log("Keydown: " + e.keyCode + ", Location: " + e.location);
+            let key = self.getKey(e.key, e.code);
+            self.keysDown[key] = true;
+        }, false);
 
 
-    addEventListener("keyup", function (e) {
-        //console.log("Keyup: " + e.keyCode + ", Location: " + e.location);
-        let key = self.getKey(e.key, e.code);
+        addEventListener("keyup", function (e) {
+            //console.log("Keyup: " + e.keyCode + ", Location: " + e.location);
+            let key = self.getKey(e.key, e.code);
 
-        delete self.keysDown[key];
-        delete self.keysDelayed[key];
-    }, false);
-}
-
-Controls.prototype.getKey = function(key, code) {
-    if (!code.startsWith("Arrow")) {
-        if (code.endsWith("Left")) {
-            key = "Left " + key;
-        } else if (code.endsWith("Right")) {
-            key = "Right " + key;
-        } else if (code.startsWith("Numpad")) {
-            key = "Numpad " + key;
-        }
+            delete self.keysDown[key];
+            delete self.keysDelayed[key];
+        }, false);
     }
 
-    return key;
-}
-
-Controls.prototype.resetToDefault = function() {
-    const self = this;
-
-    self.defaults.forEach(function(value, key) {
-        self.controls.set(key, value);
-    });
-}
-
-Controls.prototype.setCustomKeys = function(name, keys) {
-    this.controls.set(name, keys);
-}
-
-Controls.prototype.isPressed = function(key) {
-    const self = this;
-    let pressed = false;
-
-    self.controls.get(key).forEach(function(keyToTest) {
-        if (keyToTest in self.keysDown) {
-            pressed = true;
+    getKey(key, code) {
+        if (!code.startsWith("Arrow")) {
+            if (code.endsWith("Left")) {
+                key = "Left " + key;
+            } else if (code.endsWith("Right")) {
+                key = "Right " + key;
+            } else if (code.startsWith("Numpad")) {
+                key = "Numpad " + key;
+            }
         }
-    });
 
-    return pressed;
-}
+        return key;
+    }
 
-Controls.prototype.isDelayed = function(key) {
-    const self = this;
-    let delayed = false;
+    resetToDefault() {
+        const self = this;
 
-    this.controls.get(key).forEach(function(keyToTest) {
-        if (keyToTest in self.keysDelayed) {
-            delayed = true;
-        }
-    });
+        self.defaults.forEach(function(value, key) {
+            self.controls.set(key, value);
+        });
+    }
 
-    return delayed;
-}
+    setCustomKeys(name, keys) {
+        this.controls.set(name, keys);
+    }
 
-Controls.prototype.deleteKey = function(key, delay) {
-    const self = this;
-    self.controls.get(key).forEach(function(keyToTest) {
-        delete self.keysDown[keyToTest];
+    isPressed(key) {
+        const self = this;
+        let pressed = false;
+
+        self.controls.get(key).forEach(function(keyToTest) {
+            if (keyToTest in self.keysDown) {
+                pressed = true;
+            }
+        });
+
+        return pressed;
+    }
+
+    isDelayed(key) {
+        const self = this;
+        let delayed = false;
+
+        this.controls.get(key).forEach(function(keyToTest) {
+            if (keyToTest in self.keysDelayed) {
+                delayed = true;
+            }
+        });
+
+        return delayed;
+    }
+
+    deleteKey(key, delay) {
+        const self = this;
+        self.controls.get(key).forEach(function(keyToTest) {
+            delete self.keysDown[keyToTest];
+            if (delay) {
+                self.keysDelayed[keyToTest] = true;
+            }
+        });
+
         if (delay) {
-            self.keysDelayed[keyToTest] = true;
+            setTimeout(function() {
+                self.controls.get(key).forEach(function(keyToTest) {
+                    delete self.keysDelayed[keyToTest];
+                });
+            }, delay);
         }
-    });
-
-    if (delay) {
-        setTimeout(function() {
-            self.controls.get(key).forEach(function(keyToTest) {
-                delete self.keysDelayed[keyToTest];
-            });
-        }, delay);
-    }
-}
-
-/**
- *  Returns true if press succeeds
- *          false if press does not succeed
- */
-Controls.prototype.testPressed = function(key, delay) {
-    delay = delay || this.defaultDelay;
-
-    const self = this;
-    let succeeded = false;
-
-    if (self.isPressed(key) && !self.isDelayed(key)) {
-        self.deleteKey(key, delay);
-        succeeded = true;
     }
 
-    return succeeded;
-}
+    /**
+     *  Returns true if press succeeds
+     *          false if press does not succeed
+     */
+    testPressed(key, delay) {
+        delay = delay || this.defaultDelay;
 
-Controls.prototype.hasControllerSupport = function() {
-    return "getGamepads" in navigator;
-}
+        const self = this;
+        let succeeded = false;
 
-Controls.prototype.checkForGamepads = function() {
-    const self = this;
-    if (this.hasControllerSupport()) {
-        const numGamepads = navigator.getGamepads().length;
-        for (let i = 0; i < numGamepads; i++) {
-            const gamepad = navigator.getGamepads()[i];
-            if (gamepad) {
-                gamepad.axes.forEach(function(axis, axisIndex) {
-                    if (axis <= -0.5) {
-                        //console.log("axis" + axisIndex + "-left");
-                        self.keysDown["axis" + axisIndex + "-left"] = true;
-                    } else if (axis >= 0.5) {
-                        //console.log("axis" + axisIndex + "-right");
-                        self.keysDown["axis" + axisIndex + "-right"] = true;
-                    } else {
-                        delete self.keysDown["axis" + axisIndex + "-left"];
-                        delete self.keysDown["axis" + axisIndex + "-right"];
-                        delete self.keysDelayed["axis" + axisIndex + "-left"];
-                        delete self.keysDelayed["axis" + axisIndex + "-right"];
-                    }
-                });
+        if (self.isPressed(key) && !self.isDelayed(key)) {
+            self.deleteKey(key, delay);
+            succeeded = true;
+        }
 
-                gamepad.buttons.forEach(function(button, buttonIndex) {
-                    if (button.pressed) {
-                        //console.log("gamepad" + buttonIndex);
-                        self.keysDown["gamepad"+ buttonIndex] = true;
-                    } else {
-                        delete self.keysDown["gamepad" + buttonIndex];
-                        delete self.keysDelayed["gamepad" + buttonIndex];
-                    }
-                });
+        return succeeded;
+    }
+
+    hasControllerSupport() {
+        return "getGamepads" in navigator;
+    }
+
+    checkForGamepads() {
+        const self = this;
+        if (this.hasControllerSupport()) {
+            const numGamepads = navigator.getGamepads().length;
+            for (let i = 0; i < numGamepads; i++) {
+                const gamepad = navigator.getGamepads()[i];
+                if (gamepad) {
+                    gamepad.axes.forEach(function(axis, axisIndex) {
+                        if (axis <= -0.5) {
+                            //console.log("axis" + axisIndex + "-left");
+                            self.keysDown["axis" + axisIndex + "-left"] = true;
+                        } else if (axis >= 0.5) {
+                            //console.log("axis" + axisIndex + "-right");
+                            self.keysDown["axis" + axisIndex + "-right"] = true;
+                        } else {
+                            delete self.keysDown["axis" + axisIndex + "-left"];
+                            delete self.keysDown["axis" + axisIndex + "-right"];
+                            delete self.keysDelayed["axis" + axisIndex + "-left"];
+                            delete self.keysDelayed["axis" + axisIndex + "-right"];
+                        }
+                    });
+
+                    gamepad.buttons.forEach(function(button, buttonIndex) {
+                        if (button.pressed) {
+                            //console.log("gamepad" + buttonIndex);
+                            self.keysDown["gamepad"+ buttonIndex] = true;
+                        } else {
+                            delete self.keysDown["gamepad" + buttonIndex];
+                            delete self.keysDelayed["gamepad" + buttonIndex];
+                        }
+                    });
+                }
             }
         }
     }
 }
+
+
 
 window.addEventListener("gamepadconnected", function(e) {
     const gamepad = navigator.getGamepads()[e.gamepad.index];

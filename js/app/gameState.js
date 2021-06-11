@@ -1,19 +1,21 @@
-const GameState = function() {
-    this.currentGameType = "none";
-    this.hasEnded = false;
-}
+class GameState {
+    constructor() {
+        this.currentGameType = "none";
+        this.hasEnded = false;
+    }
 
-GameState.prototype.init = function(gameType) {
-    this.currentGameType = gameType;
-    this.hasEnded = false;
-}
+    init(gameType) {
+        this.currentGameType = gameType;
+        this.hasEnded = false;
+    }
 
-GameState.prototype.endGame = function(callback) {
-    if (!this.hasEnded) {
-        this.hasEnded = true;
+    endGame(callback) {
+        if (!this.hasEnded) {
+            this.hasEnded = true;
 
-        if (callback) {
-            callback();
+            if (callback) {
+                callback();
+            }
         }
     }
 }

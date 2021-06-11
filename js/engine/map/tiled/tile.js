@@ -1,21 +1,22 @@
-const Tile = function(name, sprite) {
-    this.name = name;
-    this.sprite = sprite;
-    this.canWalk = false;
+class Tile {
+    constructor(name, sprite) {
+        this.name = name;
+        this.sprite = sprite;
+        this.canWalk = false;
+    }
+
+    draw(context, frame, x, y, map, i, j) {
+        spriteMapper.getImage(this.sprite).drawImage(context, x*32, y*32);
+    }
+
+    getCanWalk() {
+        return this.canWalk;
+    }
 }
 
-Tile.prototype.draw = function(context, frame, x, y, map, i, j) {
-    spriteMapper.getImage(this.sprite).drawImage(context, x*32, y*32);
+class Path extends Tile {
+    constructor() {
+        super("path", "path");
+        this.canWalk = true;
+    }
 }
-
-Tile.prototype.getCanWalk = function() {
-    return this.canWalk;
-}
-
-const Path = function() {
-    Tile.call(this, "path", "path");
-    this.canWalk = true;
-}
-
-Path.prototype = new Tile();
-Path.prototype.constructor = Path;

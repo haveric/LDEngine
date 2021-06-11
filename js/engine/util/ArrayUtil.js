@@ -1,9 +1,12 @@
-const ArrayUtil = {
-    /*
-    randomizeArray: function(array) {
-        var currentIndex = array.length;
-        var temp;
-        var randomIndex;
+class ArrayUtil {
+    constructor() {
+
+    }
+
+    static randomizeArray(array) {
+        let currentIndex = array.length;
+        let temp;
+        let randomIndex;
 
         while (currentIndex !== 0) {
             randomIndex = Math.floor(Math.random() * currentIndex);
@@ -15,9 +18,9 @@ const ArrayUtil = {
         }
 
         return array;
-    },
-    */
-    create2dArray: function(numRows) {
+    }
+
+    static create2dArray(numRows) {
         const array = [];
 
         for (let i = 0; i < numRows; i++) {
