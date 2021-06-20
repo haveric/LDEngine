@@ -11,8 +11,11 @@ class SoundManager {
 
     play(audioName, playVolume, repeat) {
         const self = this;
+        if (playVolume === 0) {
+            return;
+        }
 
-        if (!playVolume || playVolume == null) {
+        if (playVolume === undefined) {
             playVolume = 1;
         }
 
@@ -23,8 +26,8 @@ class SoundManager {
                 const audio = new Audio(sound.src);
 
                 if (repeat) {
-                    audio.addEventListener("ended", function() {
-                        this.currentTime = 0;
+                    audio.addEventListener("ended", () => {
+                        self.currentTime = 0;
                         this.play();
                     }, false);
                 }
