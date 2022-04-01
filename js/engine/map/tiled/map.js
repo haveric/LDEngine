@@ -1,6 +1,4 @@
 class MapTiled {
-    endX;
-    endY;
 
     constructor(rows, cols) {
         this.rows = rows;
